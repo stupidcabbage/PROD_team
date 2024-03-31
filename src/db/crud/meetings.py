@@ -41,6 +41,7 @@ async def add_meeting(user_id: int,
         agent = await get_best_agent()
         _data["agent_id"] = agent.id
         _data['is_canceled'] = False
+        _data["date"] = meeting.date.now(tz=None)
 
         stmt = insert(Meeting).values(_data).returning(Meeting)
         meeting = (await session.execute(stmt)).one()[0].to_read_model()
