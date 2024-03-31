@@ -1,6 +1,6 @@
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Response
 
 from api.meetings import router as meetings_router
 from api.agents import router as agent_router
@@ -17,3 +17,14 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 app.include_router(meetings_router)
 app.include_router(agent_router)
+
+
+@app.middleware("http")
+async def some_middleware(request: Request, call_next):
+    response = await call_next(request)
+    response_body = b""
+    async for chunk in response.body_iterator:
+        response_body += chunk
+    print(f"response_body={response_body.decode()}")
+    return Response(content=response_body, status_code=response.status_code,
+                    headers=dict(response.headers), media_type=response.media_type)
