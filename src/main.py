@@ -19,18 +19,18 @@ app.include_router(meetings_router)
 app.include_router(agent_router)
 
 
-@app.middleware("http")
-async def TestCustomMiddleware(request: Request, call_next):
-    the_headers = request.headers
-    the_body = await request.json()
-
-    print(the_headers)
-    print(the_body)
-
-    response = await call_next(request)
-
-    return response
-
+# @app.middleware("http")
+# async def TestCustomMiddleware(request: Request, call_next):
+#     the_headers = request.headers
+#     the_body = await request.json()
+#
+#     print(the_headers)
+#     print(the_body)
+#
+#     response = await call_next(request)
+#
+#     return response
+#
 # @app.middleware("http")
 # async def some_middleware(request: Request, call_next):
 #     response = await call_next(request)
