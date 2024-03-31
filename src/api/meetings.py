@@ -13,6 +13,7 @@ router = APIRouter(prefix='/meetings', tags=["meetings"])
 @router.post('/')
 async def add_meeting_handler(meeting: Annotated[MeetingAddSchema, Body()],
                               user_id: JWTAuth) -> MeetingSchema | None:
+    print(meeting.dict())
     meeting = await add_meeting(user_id, meeting)
     return meeting
 
