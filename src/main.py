@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request, Response
+
 from api.meetings import router as meetings_router
 from api.agents import router as agent_router
 from db.crud.agents import fill_defaults as fill_agents
