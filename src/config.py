@@ -42,5 +42,12 @@ class JWTConfig(Config):
         self.secret_key = self.env.get("SECRET_KEY", "privetmir")
 
 
+class ExternalAPIConfig(Config):
+    def __init__(self):
+        super().__init__()
+        self.graphhopper_key = self.env.get('GRAPHHOPPER_KEY', 'problems')
+
+
 db_config = DBConfig()
 jwt_config = JWTConfig()
+external_api_config = ExternalAPIConfig()

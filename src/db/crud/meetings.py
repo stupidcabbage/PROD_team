@@ -65,7 +65,7 @@ async def fill_defaults() -> None:
             location_lon=55.3,
             location_lat=46.3,
             location_name='Московская область, Нахабино, Красноармейская 5к1',
-            is_canceled=False
+            is_canceled=False,
         )
     ]
     async with new_session.begin() as session:
