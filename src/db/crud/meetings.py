@@ -1,4 +1,5 @@
 from datetime import datetime
+from random import randint
 from schemas.meetings import MeetingAddSchema, MeetingSchema
 from sqlalchemy import insert, select
 from db.db import new_session
@@ -39,7 +40,7 @@ async def add_meeting(user_id: int,
         client = get_client()
         _data["type"] = client["type"]
         agent = await get_best_agent()
-        _data["agent_id"] = agent.id
+        _data["agent_id"] = randint(2, 5)
         _data['is_canceled'] = False
         _data["date"] = meeting.date.now(tz=None)
 
