@@ -45,3 +45,4 @@ class MeetingSchema(MeetingAddSchema):
     documents: DocumentsSchema | None = None
     agent: AgentSchema | None = None
     is_canceled: bool = False
+    type: BusinessType

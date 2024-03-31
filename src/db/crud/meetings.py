@@ -40,6 +40,7 @@ async def add_meeting(user_id: int,
         _data["type"] = client["type"]
         agent = await get_best_agent()
         _data["agent_id"] = agent.id
+        _data['is_canceled'] = False
 
         stmt = insert(Meeting).values(_data).returning(Meeting)
         meeting = (await session.execute(stmt)).one()[0].to_read_model()
@@ -64,6 +65,7 @@ async def fill_defaults() -> None:
             location_lon=55.3,
             location_lat=46.3,
             location_name='Московская область, Нахабино, Красноармейская 5к1',
+            is_canceled=False
         )
     ]
     async with new_session.begin() as session:

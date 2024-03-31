@@ -6,7 +6,7 @@ from sqlalchemy import BIGINT, JSON, FLOAT, ForeignKey
 
 from db.db import Model
 from db.models.agents import Agent
-from schemas.meetings import MeetingSchema, LocationSchema, ParticipantSchema
+from schemas.meetings import BusinessType, MeetingSchema, LocationSchema, ParticipantSchema
 
 
 class Meeting(Model):
@@ -41,5 +41,6 @@ class Meeting(Model):
                 latitude=self.location_lat,
                 longitude=self.location_lon,
                 name=self.location_name),
-            is_canceled=self.is_canceled
+            is_canceled=self.is_canceled,
+            type=BusinessType.organisation if self.type == 'ООО' else BusinessType.individual
             )
