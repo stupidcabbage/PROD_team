@@ -63,7 +63,8 @@ async def fill_defaults() -> None:
                 {'name': 'Иванов Иван', 'position': 'Бухгалтер', 'phone_number': '+79851187385'}],
             location_lon=55.3,
             location_lat=46.3,
-            location_name='Московская область, Нахабино, Красноармейская 5к1')
+            location_name='Московская область, Нахабино, Красноармейская 5к1',
+        )
     ]
     async with new_session.begin() as session:
         existing_rows_count = await session.scalar(select(Meeting).limit(1))

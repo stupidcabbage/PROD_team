@@ -44,3 +44,4 @@ class MeetingSchema(MeetingAddSchema):
     id: int
     documents: DocumentsSchema | None = None
     agent: AgentSchema | None = None
+    is_canceled: bool = False

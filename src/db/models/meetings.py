@@ -24,6 +24,7 @@ class Meeting(Model):
     location_lon: Mapped[float] = mapped_column(FLOAT)
     location_lat: Mapped[float] = mapped_column(FLOAT)
     location_name: Mapped[str] = mapped_column()
+    is_canceled: Mapped[bool] = mapped_column()
 
     def __repr__(self) -> str:
         return f"Meeting(id: {self.id!r}, date: {self.date!r})"
@@ -39,5 +40,6 @@ class Meeting(Model):
             place=LocationSchema(
                 latitude=self.location_lat,
                 longitude=self.location_lon,
-                name=self.location_name)
+                name=self.location_name),
+            is_canceled=self.is_canceled
             )
