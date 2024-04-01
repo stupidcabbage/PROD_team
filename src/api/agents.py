@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Body, Depends
 
 from schemas.meetings import AgentSchema
 from schemas.meetings import AgentSchema
@@ -15,7 +15,7 @@ router = APIRouter(prefix='/agents', tags=["agents"])
 
 
 @router.get('/')
-async def get_agents_handler(point: PointSchema,
+async def get_agents_handler(point: Annotated[PointSchema, Depends()],
                              user_id: JWTAuth) -> list[AgentSchema | None]:
     resp = []
     routes = await get_all_routes()
@@ -24,6 +24,7 @@ async def get_agents_handler(point: PointSchema,
 
     agents = await find_closest_agents(point=point, routes=routes)
     if not agents:
+        print("NOAGENTS")
         return resp
 
     for agent_id, _ in set(agents):

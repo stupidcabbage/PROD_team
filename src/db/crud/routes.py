@@ -92,18 +92,18 @@ async def fill_defaults() -> None:
             Route(date=datetime(year=2024, month=4, day=day), agent_id=2, locations=[
                 PointSchema(
                     longitude=37.6208, latitude=55.7539, date_time=datetime(
-                        year=2024, month=4, day=1, hour=8, minute=0)).to_dict()
+                        year=2024, month=4, day=day, hour=8, minute=0)).to_dict()
             ]),
 
             Route(date=datetime(year=2024, month=4, day=day), agent_id=3, locations=[
                 PointSchema(
                     longitude=37.6208, latitude=55.7539, date_time=datetime(
-                        year=2024, month=4, day=1, hour=8, minute=0)).to_dict()
+                        year=2024, month=4, day=day, hour=8, minute=0)).to_dict()
             ]),
-            Route(date=datetime(year=2024, month=4, day=1), agent_id=4, locations=[
+            Route(date=datetime(year=2024, month=4, day=day), agent_id=4, locations=[
                 PointSchema(
                     longitude=37.6155, latitude=55.7558, date_time=datetime(
-                        year=2024, month=4, day=1, hour=8, minute=0)).to_dict()
+                        year=2024, month=4, day=day, hour=8, minute=0)).to_dict()
             ]),
         ]
 

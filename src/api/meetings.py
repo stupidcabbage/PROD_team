@@ -25,7 +25,7 @@ async def add_meeting_handler(meeting: Annotated[MeetingAddSchema, Body()],
     date_time = meeting.date
 
     if not agent_id:
-        agent_id = 1
+        agent_id = 4
 
     route_data = await get_route_by_agent_and_date(agent_id=agent_id,
                                                    date=datetime(year=date_time.year,
@@ -39,6 +39,7 @@ async def add_meeting_handler(meeting: Annotated[MeetingAddSchema, Body()],
                       latitude=lat, longitude=lon))
 
     await update_route_points(route_data.id, _locations)
+    return meeting
 
 
 @router.get('/')

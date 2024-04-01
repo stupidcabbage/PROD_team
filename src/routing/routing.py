@@ -39,9 +39,11 @@ async def find_closest_agents(routes: list[RouteSchema], point: PointSchema) -> 
     agents = []
 
     for route in routes:
-        if route.locations[0].date_time.date != target_time.date:
+        print(route.locations[0].date_time.date(), target_time.date())
+        if route.locations[0].date_time.date() != target_time.date():
             continue
         if len(route.locations) == 1:
+            print(str(route.locations[0].date_time), str(target_time.date))
             left_point_time = route.locations[0].date_time
             route_time = await get_route_time(
                 (route.locations[0].longitude,

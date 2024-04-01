@@ -1,6 +1,3 @@
-
-from typing import
-
 from fastapi import APIRouter
 
 from api.dependencies import JWTAuth
