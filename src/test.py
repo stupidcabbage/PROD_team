@@ -27,4 +27,9 @@ async def test():
         name='Test', longitude=36.9163, latitude=56.0060), target_time=datetime(
         year=2024, month=4, day=1, hour=13, minute=45))
 
+    await find_closest_agents(routes, LocationSchema(
+        name='Test', longitude=36.9163, latitude=56.0060), target_time=datetime(
+        year=2024, month=4, day=1, hour=13, minute=45))
+
+
 asyncio.run(test())
