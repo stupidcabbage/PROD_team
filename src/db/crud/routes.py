@@ -41,9 +41,9 @@ async def add_route(route: RouteSchema) -> RouteSchema | None:
             stmt = insert(Route).values(**_data).returning(Route)
             meeting = (await session.execute(stmt)).one()[0].to_read_model()
 
-                await session.commit()
-                await session.flush()
-                return meeting
+            await session.commit()
+            await session.flush()
+            return meeting
     except:
         raise BaseDBException
 

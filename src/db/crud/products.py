@@ -10,13 +10,13 @@ async def get_relative_products(
         user_id: int) -> list[ProductSchema]:
     try:
         async with new_session.begin() as session:
-            client = await get_client(user_id)
+            client = get_client(user_id)
             bussines_type = True if client["type"] == "ООО" else False
             stmt = select(Product).where(
                 Product.is_organisation == bussines_type)
             return [i.to_read_model() for i in (await session.scalars(stmt)).all()]
-    except:
-        raise BaseDBException
+    except Exception as e:
+        raise e
 
 
 async def fill_defaults():

@@ -13,8 +13,8 @@ class Product(Model):
 
     name: Mapped[str] = mapped_column()
     description: Mapped[str] = mapped_column()
+    url: Mapped[str] = mapped_column()
     is_organisation: Mapped[bool] = mapped_column()
-    count: Mapped[int] = mapped_column()
 
     def __repr__(self) -> str:
         return f"Product(id: {self.id!r}, name: {self.name!r})"

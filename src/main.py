@@ -22,7 +22,7 @@ app = FastAPI(lifespan=lifespan)
 app.include_router(meetings_router)
 app.include_router(agent_router)
 app.include_router(products_router)
-app.add_exception_handler(BaseDBException, db_exception_handler)
+# app.add_exception_handler(BaseDBException, db_exception_handler)
 
 # @app.middleware("http")
 # async def TestCustomMiddleware(request: Request, call_next):
