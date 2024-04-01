@@ -22,15 +22,15 @@ async def get_relative_products(
 async def fill_defaults():
     try:
         data = [
-            {"name": "Бизнес карта для компаний", "description": "Обслуживание — 0 ₽. Привязана к расчетному счету. Для бизнес-расходов и личных трат", "is_organisation": True},
-            {"name": "Бизнес карта для ИП", "description": "Обслуживание — 0 ₽. Привязана к расчетному счету. Для бизнес-расходов и личных трат", "is_organisation": False},
-            {"name": "Онлайн банк для малого бизнеса", "description": "Без очередей и ожидания на линии. Удобное приложение и личный кабинет. Поддержка 24/7 в чате", "is_organisation": True},
-            {"name": "Онлайн банк для малого бизнеса", "description": "Без очередей и ожидания на линии. Удобное приложение и личный кабинет. Поддержка 24/7 в чате", "is_organisation": False},
-            {"name": "Кредит на развитие бизнеса", "description": "Получите деньги на развитие бизнеса: до 10 млн рублей. Вы можете узнать сумму без открытия счета.", "is_organisation": True},
-            {"name": "Кредит на развитие бизнеса", "description": "Получите деньги на развитие бизнеса: до 10 млн рублей. Вы можете узнать сумму без открытия счета.", "is_organisation": False},
-            {"name": "Бесплатная онлайн бухгалтерия для ИП", "description": "Легко сдавать отчетность и платить налоги самостоятельно.", "is_organisation": False},
-            {"name": "Удобный прием платежей для вашего бизнеса", "description": "Принимайте платежи от клиентов на сайте, в приложении, соцсетях, месседжерах, по e-mail и СМС", "is_organisation": False},
-            {"name": "Удобный прием платежей для вашего бизнеса", "description": "Принимайте платежи от клиентов на сайте, в приложении, соцсетях, месседжерах, по e-mail и СМС", "is_organisation": True},
+            {"name": "Бизнес карта для компаний", "description": "Обслуживание — 0 ₽. Привязана к расчетному счету. Для бизнес-расходов и личных трат", "is_organisation": True, "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"},
+            {"name": "Бизнес карта для ИП", "description": "Обслуживание — 0 ₽. Привязана к расчетному счету. Для бизнес-расходов и личных трат", "is_organisation": False, "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"},
+            {"name": "Онлайн банк для малого бизнеса", "description": "Без очередей и ожидания на линии. Удобное приложение и личный кабинет. Поддержка 24/7 в чате", "is_organisation": True, "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"},
+            {"name": "Онлайн банк для малого бизнеса", "description": "Без очередей и ожидания на линии. Удобное приложение и личный кабинет. Поддержка 24/7 в чате", "is_organisation": False, "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"},
+            {"name": "Кредит на развитие бизнеса", "description": "Получите деньги на развитие бизнеса: до 10 млн рублей. Вы можете узнать сумму без открытия счета.", "is_organisation": True, "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"},
+            {"name": "Кредит на развитие бизнеса", "description": "Получите деньги на развитие бизнеса: до 10 млн рублей. Вы можете узнать сумму без открытия счета.", "is_organisation": False, "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"},
+            {"name": "Бесплатная онлайн бухгалтерия для ИП", "description": "Легко сдавать отчетность и платить налоги самостоятельно.", "is_organisation": False, "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"},
+            {"name": "Удобный прием платежей для вашего бизнеса", "description": "Принимайте платежи от клиентов на сайте, в приложении, соцсетях, месседжерах, по e-mail и СМС", "is_organisation": False, "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"},
+            {"name": "Удобный прием платежей для вашего бизнеса", "description": "Принимайте платежи от клиентов на сайте, в приложении, соцсетях, месседжерах, по e-mail и СМС", "is_organisation": True, "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"},
         ]
         async with new_session.begin() as session:
 
