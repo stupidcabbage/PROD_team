@@ -1,11 +1,11 @@
 import asyncio
 from datetime import datetime, timedelta
 from typing import Tuple
+
 # from config import external_api_config
 from routing.client import client
 from schemas.meetings import LocationSchema
 from schemas.routes import PointSchema, RouteSchema
-
 
 graphhopper_url = 'https://graphhopper.com/api/1/'
 

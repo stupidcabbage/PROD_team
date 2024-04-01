@@ -1,8 +1,8 @@
 import asyncio
 from datetime import datetime
 
-from schemas.meetings import LocationSchema
 from routing.routing import find_closest_agents
+from schemas.meetings import LocationSchema
 from schemas.routes import PointSchema, RouteSchema
 
 

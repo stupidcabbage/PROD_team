@@ -1,11 +1,12 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Body, status
-from schemas.meetings import MeetingAddSchema, MeetingSchema
-from api.dependencies import JWTAuth
-from db.crud.meetings import add_meeting, cancel_meeting, get_all_meetings, get_meeting_by_id
-from db.crud.documents import get_documents
 
+from api.dependencies import JWTAuth
+from db.crud.documents import get_documents
+from db.crud.meetings import (add_meeting, cancel_meeting, get_all_meetings,
+                              get_meeting_by_id)
+from schemas.meetings import MeetingAddSchema, MeetingSchema
 
 router = APIRouter(prefix='/meetings', tags=["meetings"])
 

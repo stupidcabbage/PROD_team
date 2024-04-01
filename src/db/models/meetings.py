@@ -1,12 +1,13 @@
 import json
 from datetime import datetime
 
-from sqlalchemy.orm import mapped_column, Mapped, relationship
-from sqlalchemy import BIGINT, JSON, FLOAT, ForeignKey
+from sqlalchemy import BIGINT, FLOAT, JSON, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from db.db import Model
 from db.models.agents import Agent
-from schemas.meetings import BusinessType, MeetingSchema, LocationSchema, ParticipantSchema
+from schemas.meetings import (BusinessType, LocationSchema, MeetingSchema,
+                              ParticipantSchema)
 
 
 class Meeting(Model):

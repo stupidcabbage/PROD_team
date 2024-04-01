@@ -1,11 +1,14 @@
 from datetime import datetime
 from random import randint
-from schemas.meetings import MeetingAddSchema, MeetingSchema, MeetingUpdateSchema
+
 from sqlalchemy import insert, select, update
-from db.db import new_session
-from db.models.meetings import Meeting
+
 from db.crud.agents import get_best_agent
 from db.crud.documents import get_documents
+from db.db import new_session
+from db.models.meetings import Meeting
+from schemas.meetings import (MeetingAddSchema, MeetingSchema,
+                              MeetingUpdateSchema)
 from utils import get_client
 
 
@@ -59,6 +62,7 @@ async def add_meeting(user_id: int,
 
 
 async def update_meeting(user_id: int,
+                         meeting_id: int,
                          meeting: MeetingUpdateSchema) -> MeetingSchema:
     async with new_session.begin() as session:
         _data = {}
@@ -72,7 +76,16 @@ async def update_meeting(user_id: int,
             _data["participants"] = meeting_data["participants"]
         if meeting.date:
             _data["date"] = meeting_data["date"]
-        pass
+        stmt = (
+            update(Meeting).
+            where(Meeting.user_id == user_id).
+            where(Meeting.id == meeting_id).
+            values(**_data).
+            returning(Meeting)
+        )
+
+        meeting = (await session.execute(stmt)).one()[0].to_read_model()
+        return meeting
 
 
 async def cancel_meeting(meeting_id: int,
