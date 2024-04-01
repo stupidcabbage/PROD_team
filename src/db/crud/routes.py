@@ -17,7 +17,7 @@ async def get_route(id: int) -> RouteSchema | None:
             if result:
                 result = result.to_read_model()
             return result
-    except IntegrityError:
+    except:
         raise BaseDBException
 
 
@@ -29,7 +29,7 @@ async def get_all_routes() -> list[RouteSchema] | None:
             if result:
                 result = [row.to_read_model() for row in result]
             return result
-    except IntegrityError:
+    except:
         raise BaseDBException
 
 
@@ -46,7 +46,7 @@ async def add_route(route: RouteSchema) -> RouteSchema | None:
             await session.commit()
             await session.flush()
             return meeting
-    except IntegrityError:
+    except:
         raise BaseDBException
 
 
@@ -67,5 +67,5 @@ async def update_route_points(route_id: int,
 
             meeting = (await session.execute(stmt)).one()[0].to_read_model()
             return meeting
-    except IntegrityError:
+    except:
         raise BaseDBException

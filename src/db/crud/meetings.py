@@ -68,7 +68,7 @@ async def add_meeting(user_id: int,
             await session.commit()
             await session.flush()
             return meeting
-    except IntegrityError:
+    except:
         raise BaseDBException
 
 
@@ -99,7 +99,7 @@ async def update_meeting(user_id: int,
             meeting = (await session.execute(stmt)).one()[0].to_read_model()
             await session.commit()
             return meeting
-    except (IntegrityError, InvalidRequestError):
+    except:
         raise BaseDBException
 
 
@@ -115,7 +115,7 @@ async def cancel_meeting(meeting_id: int,
             )
             await session.execute(stmt)
             await session.commit()
-    except IntegrityError:
+    except:
         raise BaseDBException
 
 

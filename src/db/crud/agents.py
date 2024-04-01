@@ -5,7 +5,6 @@ from sqlalchemy import select
 from db.db import new_session
 from db.models.agents import Agent
 from schemas.meetings import AgentSchema
-from sqlalchemy.exc import IntegrityError
 
 from schemas.exceptions import BaseDBException
 
@@ -18,7 +17,7 @@ async def get_agent_by_id(id: int) -> AgentSchema | None:
             if result:
                 result = result.to_read_schema()
             return result
-    except IntegrityError:
+    except:
         raise BaseDBException
 
 
@@ -30,7 +29,7 @@ async def get_best_agent() -> AgentSchema | None:
             if model:
                 model = model.to_read_model()
             return model
-    except IntegrityError:
+    except:
         raise BaseDBException
 
 

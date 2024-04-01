@@ -11,7 +11,7 @@ from schemas.meetings import MeetingAddSchema, MeetingSchema, MeetingUpdateSchem
 router = APIRouter(prefix='/meetings', tags=["meetings"])
 
 
-@router.post('/')
+@router.post('/', response_model_exclude_none=True)
 async def add_meeting_handler(meeting: Annotated[MeetingAddSchema, Body()],
                               user_id: JWTAuth) -> MeetingSchema | None:
     meeting = await add_meeting(user_id, meeting)
