@@ -66,4 +66,4 @@ async def find_closest_agents(routes: list[RouteSchema], location: LocationSchem
                         agents.append((route.agent_id, route_time))
 
     agents = sorted(agents, key=lambda x: x[1])
-    return agents
+    return agents[:10]

@@ -43,7 +43,6 @@ async def fill_defaults() -> None:
               phone_number="+79890573535", photo="https://st3.depositphotos.com/3811801/18613/i/450/depositphotos_186133820-stock-photo-bearded-man-on-a-gray.jpg"),
         Agent(name="Дмитрий Витальевич", description="Крайне пунктуален",
               phone_number="+79899503535", photo="https://st3.depositphotos.com/3811801/18613/i/450/depositphotos_186133820-stock-photo-bearded-man-on-a-gray.jpg"),
-
     ]
     async with new_session.begin() as session:
         existing_rows_count = await session.scalar(select(Agent).limit(1))
