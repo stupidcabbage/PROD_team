@@ -4,8 +4,6 @@ from db.db import new_session
 from datetime import datetime
 from db.models.routes import Route
 from schemas.routes import (RouteSchema, PointSchema)
-from sqlalchemy.exc import IntegrityError
-
 from schemas.exceptions import BaseDBException
 
 
@@ -43,29 +41,77 @@ async def add_route(route: RouteSchema) -> RouteSchema | None:
             stmt = insert(Route).values(**_data).returning(Route)
             meeting = (await session.execute(stmt)).one()[0].to_read_model()
 
-            await session.commit()
-            await session.flush()
-            return meeting
+                await session.commit()
+                await session.flush()
+                return meeting
     except:
         raise BaseDBException
 
 
 async def update_route_points(route_id: int,
                               points: list[PointSchema]) -> PointSchema:
+    async with new_session.begin() as session:
+        _points = [point.model_dump() for point in points]
+        for loc in _points:
+            loc['date_time'] = loc['date_time'].isoformat()
+        _data = {'locations': _points}
+        stmt = (
+            update(Route).
+            where(Route.id == route_id).
+            values(**_data).
+            returning(Route)
+        )
+
+        meeting = (await session.execute(stmt)).one()[0].to_read_model()
+        return meeting
+
+
+async def get_route_by_agent_and_date(agent_id: int, date: datetime) -> RouteSchema | None:
     try:
         async with new_session.begin() as session:
-            _points = [point.model_dump() for point in points]
-            for loc in _points:
-                loc['date_time'] = loc['date_time'].isoformat()
-            _data = {'locations': _points}
-            stmt = (
-                update(Route).
-                where(Route.id == route_id).
-                values(**_data).
-                returning(Route)
-            )
-
-            meeting = (await session.execute(stmt)).one()[0].to_read_model()
-            return meeting
+            stmt = select(Route).where(Route.agent_id ==
+                                    agent_id).where(Route.date == date)
+            result = await session.scalar(stmt)
+            if result:
+                result = result.to_read_model()
+            return result
     except:
         raise BaseDBException
+
+
+async def fill_defaults() -> None:
+    routes = []
+    for day in range(1, 20):
+        routes.append([
+            Route(date=datetime(year=2024, month=4, day=day), agent_id=1, locations=[
+                PointSchema(
+                    longitude=37.6208, latitude=55.7539, date_time=datetime(
+                        year=2024, month=4, day=day, hour=8, minute=0)).to_dict()
+            ]),
+
+            Route(date=datetime(year=2024, month=4, day=day), agent_id=2, locations=[
+                PointSchema(
+                    longitude=37.6208, latitude=55.7539, date_time=datetime(
+                        year=2024, month=4, day=1, hour=8, minute=0)).to_dict()
+            ]),
+
+            Route(date=datetime(year=2024, month=4, day=day), agent_id=3, locations=[
+                PointSchema(
+                    longitude=37.6208, latitude=55.7539, date_time=datetime(
+                        year=2024, month=4, day=1, hour=8, minute=0)).to_dict()
+            ]),
+            Route(date=datetime(year=2024, month=4, day=day), agent_id=4, locations=[
+                PointSchema(
+                    longitude=37.6155, latitude=55.7558, date_time=datetime(
+                        year=2024, month=4, day=1, hour=8, minute=0)).to_dict()
+            ]),
+        ])
+    async with new_session.begin() as session:
+        existing_rows_count = await session.scalar(select(Route).limit(1))
+
+        if not existing_rows_count:
+            for route in routes:
+                session.add(route)
+
+        await session.commit()
+        await session.flush()

@@ -29,12 +29,12 @@ async def get_route_time(point_a: Tuple[float, float], point_b: Tuple[float, flo
         time = route_data['paths'][0]['time']
     else:
         raise RuntimeError('ROUTING ERROR')
-    print(time / (1000 * 60))
     return time
 
 
-async def find_closest_agents(routes: list[RouteSchema], location: LocationSchema, target_time: datetime) -> list[int]:
-    target_lon, target_lat = location.longitude, location.latitude
+async def find_closest_agents(routes: list[RouteSchema], point: PointSchema) -> list[Tuple[int, int]]:
+    target_lon, target_lat = point.longitude, point.latitude
+    target_time = point.date_time
 
     agents = []
     for route in routes:
@@ -50,6 +50,7 @@ async def find_closest_agents(routes: list[RouteSchema], location: LocationSchem
             agents.append((route.agent_id, route_time))
 
         else:
+            route.locations.sort(key=lambda x: x.date_time)
             for i in range(1, len(route.locations)):
                 right_point_time = route.locations[i].date_time
                 left_point_time = route.locations[i - 1].date_time

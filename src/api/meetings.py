@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Annotated
 
 from fastapi import APIRouter, Body, Depends, status
@@ -5,8 +6,10 @@ from fastapi import APIRouter, Body, Depends, status
 from api.dependencies import JWTAuth
 from db.crud.documents import get_documents
 from db.crud.meetings import (add_meeting, cancel_meeting, get_all_meetings,
-                              get_meeting_by_id, update_meeting)
-from schemas.meetings import MeetingAddSchema, MeetingSchema, MeetingUpdateSchema
+                              get_meeting_by_id)
+from schemas.meetings import MeetingAddSchema, MeetingSchema
+from db.crud.routes import get_route_by_agent_and_date, update_route_points
+from schemas.routes import PointSchema
 
 router = APIRouter(prefix='/meetings', tags=["meetings"])
 
@@ -15,7 +18,27 @@ router = APIRouter(prefix='/meetings', tags=["meetings"])
 async def add_meeting_handler(meeting: Annotated[MeetingAddSchema, Body()],
                               user_id: JWTAuth) -> MeetingSchema | None:
     meeting = await add_meeting(user_id, meeting)
-    return meeting
+
+    agent_id = meeting.agent_id
+    lat = meeting.place.latitude
+    lon = meeting.place.longitude
+    date_time = meeting.date
+
+    if not agent_id:
+        agent_id = 1
+
+    route_data = await get_route_by_agent_and_date(agent_id=agent_id,
+                                                   date=datetime(year=date_time.year,
+                                                                 month=date_time.month,
+                                                                 day=date_time.day))
+    if not route_data:
+        return None
+
+    _locations = route_data.locations
+    _locations.append(PointSchema(date_time=date_time,
+                      latitude=lat, longitude=lon))
+
+    await update_route_points(route_data.id, _locations)
 
 
 @router.get('/')
@@ -43,8 +66,5 @@ async def cancel_meeting_handler(meeting_id: int,
 
 
 @router.patch("/{meeting_id}")
-async def update_meeting_handler(meeting: MeetingUpdateSchema,
-                                 meeting_id: int,
-                                 user_id: JWTAuth):
-    meeting = await update_meeting(user_id, meeting_id, meeting)
-    return meeting
+async def update_meeting_handler():
+    pass

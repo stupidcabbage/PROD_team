@@ -17,9 +17,6 @@ class Route(Model):
     date: Mapped[datetime] = mapped_column()
     locations: Mapped[JSON] = mapped_column(JSON)
 
-    def __repr__(self) -> str:
-        return f"Meeting(id: {self.id!r}, date: {self.date!r})"
-
     def to_read_model(self) -> RouteSchema:
-        return RouteSchema(agent_id=self.agent_id,
+        return RouteSchema(id=self.id, agent_id=self.agent_id,
                            locations=[PointSchema(**location) for location in self.locations])

@@ -17,7 +17,7 @@ async def get_agent_by_id(id: int) -> AgentSchema | None:
             if result:
                 result = result.to_read_schema()
             return result
-    except:
+    except IntegrityError:
         raise BaseDBException
 
 
