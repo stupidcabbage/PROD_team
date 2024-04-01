@@ -43,4 +43,5 @@ async def cancel_meeting_handler(meeting_id: int,
 
 
 @router.patch("/{meeting_id}")
-async def update_meeting_handler
+async def update_meeting_handler():
+    pass
