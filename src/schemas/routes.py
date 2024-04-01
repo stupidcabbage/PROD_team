@@ -4,7 +4,6 @@ from pydantic import BaseModel
 
 
 class PointSchema(BaseModel):
-    meeting_id: int  # если пригодится
     longitude: float
     latitude: float
     date_time: datetime
