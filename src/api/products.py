@@ -1,7 +1,7 @@
 
-from typing import Annotated
+from typing import
 
-from fastapi import APIRouter, Body
+from fastapi import APIRouter
 
 from api.dependencies import JWTAuth
 from db.crud.products import get_relative_products
