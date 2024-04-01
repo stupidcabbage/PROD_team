@@ -16,16 +16,16 @@ router = APIRouter(prefix='/agents', tags=["agents"])
 
 @router.get('/')
 async def get_agents_handler(point: Annotated[PointSchema, Depends()],
-                             user_id: JWTAuth) -> list[AgentSchema | None] | None:
+                             user_id: JWTAuth) -> list[AgentSchema | None]:
+    resp = []
     routes = await get_all_routes()
     if not routes:
-        return None
+        return resp
 
     agents = await find_closest_agents(point=point, routes=routes)
     if not agents:
-        return None
+        return resp
 
-    resp = []
     for agent_id, _ in agents:
         agent = await get_agent_by_id(agent_id)
         resp.append(agent)
