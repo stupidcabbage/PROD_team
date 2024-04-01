@@ -6,16 +6,19 @@ from api.dependencies import JWTAuth
 from db.crud.documents import get_documents
 from db.crud.meetings import (add_meeting, cancel_meeting, get_all_meetings,
                               get_meeting_by_id, update_meeting)
-from schemas.meetings import MeetingAddSchema, MeetingSchema, MeetingUpdateSchema
+from schemas.meetings import AgentSchema, MeetingAddSchema, MeetingSchema, MeetingUpdateSchema
+from db.crud.agents import get_agent_by_id
 
 router = APIRouter(prefix='/meetings', tags=["meetings"])
 
 
 @router.post('/')
 async def add_meeting_handler(meeting: Annotated[MeetingAddSchema, Body()],
-                              user_id: JWTAuth) -> MeetingSchema | None:
-    meeting = await add_meeting(user_id, meeting)
-    return meeting
+                              user_id: JWTAuth) -> list[AgentSchema | None] | None:
+    # meeting = await add_meeting(user_id, meeting)
+    # return meeting
+    ...
+    return [await get_agent_by_id(3)]
 
 
 @router.get('/')
