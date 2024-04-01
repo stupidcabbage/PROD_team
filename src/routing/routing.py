@@ -39,7 +39,7 @@ async def find_closest_agents(routes: list[RouteSchema], point: PointSchema) -> 
     agents = []
 
     for route in routes:
-        if route.locations[0].date_time > target_time:
+        if route.locations[0].date_time.date != target_time.date:
             continue
         if len(route.locations) == 1:
             left_point_time = route.locations[0].date_time
