@@ -16,8 +16,7 @@ from schemas.exceptions import BaseDBException
 async def lifespan(app: FastAPI):
     await fill_agents()
     await fill_meetings()
-    await fill_agents()
-    # await fill_products()
+    await fill_products()
     yield
 
 app = FastAPI(lifespan=lifespan)
