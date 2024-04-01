@@ -9,97 +9,114 @@ from db.db import new_session
 from db.models.meetings import Meeting
 from schemas.meetings import (MeetingAddSchema, MeetingSchema,
                               MeetingUpdateSchema)
+from schemas.exceptions import BaseDBException
 from utils import get_client
+from sqlalchemy.exc import IntegrityError, InvalidRequestError
 
 
 async def get_meeting_by_id(id: int) -> MeetingSchema | None:
-    async with new_session.begin() as session:
-        stmt = select(Meeting).where(Meeting.id == id)
-        result = await session.scalar(stmt)
-        if result:
-            result = result.to_read_model()
-        return result
+    try:
+        async with new_session.begin() as session:
+            stmt = select(Meeting).where(Meeting.id == id)
+            result = await session.scalar(stmt)
+            if result:
+                result = result.to_read_model()
+            return result
+    except IntegrityError:
+        raise BaseDBException
 
 
 async def get_all_meetings(user_id: int) -> list[MeetingSchema] | None:
-    async with new_session.begin() as session:
-        stmt = (
-            select(Meeting).
-            where(Meeting.user_id == user_id).
-            where(Meeting.is_canceled == False).
-            order_by(Meeting.date)
-        )
-        result = await session.scalars(stmt)
-        if result:
-            result = [row.to_read_model() for row in result]
-        return result
+    try:
+        async with new_session.begin() as session:
+            stmt = (
+                select(Meeting).
+                where(Meeting.user_id == user_id).
+                where(Meeting.is_canceled == False).
+                order_by(Meeting.date)
+            )
+            result = await session.scalars(stmt)
+            if result:
+                result = [row.to_read_model() for row in result]
+            return result
+    except IntegrityError:
+        raise BaseDBException
 
 
 async def add_meeting(user_id: int,
                       meeting: MeetingAddSchema) -> MeetingSchema | None:
-    async with new_session.begin() as session:
-        _data = meeting.model_dump()
-        del _data["place"]
-        _data["location_lon"] = meeting.place.longitude
-        _data["location_lat"] = meeting.place.latitude
-        _data["location_name"] = meeting.place.name
-        _data["user_id"] = user_id
+    try:
+        async with new_session.begin() as session:
+            _data = meeting.model_dump()
+            del _data["place"]
+            _data["location_lon"] = meeting.place.longitude
+            _data["location_lat"] = meeting.place.latitude
+            _data["location_name"] = meeting.place.name
+            _data["user_id"] = user_id
 
-        client = get_client(user_id)
-        _data["type"] = client["type"]
-        agent = await get_best_agent()
-        _data["agent_id"] = randint(2, 5)
-        _data['is_canceled'] = False
+            client = get_client(user_id)
+            _data["type"] = client["type"]
+            agent = await get_best_agent()
+            _data["agent_id"] = randint(2, 5)
+            _data['is_canceled'] = False
 
-        stmt = insert(Meeting).values(_data).returning(Meeting)
-        meeting = (await session.execute(stmt)).one()[0].to_read_model()
-        documents = await get_documents(
-            True if client["type"] == "ООО" else False)
-        meeting.documents = documents
-        await session.commit()
-        await session.flush()
-        return meeting
+            stmt = insert(Meeting).values(_data).returning(Meeting)
+            meeting = (await session.execute(stmt)).one()[0].to_read_model()
+            documents = await get_documents(
+                True if client["type"] == "ООО" else False)
+            meeting.documents = documents
+            await session.commit()
+            await session.flush()
+            return meeting
+    except IntegrityError:
+        raise BaseDBException
 
 
 async def update_meeting(user_id: int,
                          meeting_id: int,
                          meeting: MeetingUpdateSchema) -> MeetingSchema:
-    async with new_session.begin() as session:
-        _data = {}
-        if meeting.place:
-            _data["location_lon"] = meeting.place.longitude
-            _data["location_lat"] = meeting.place.latitude
-            _data["location_name"] = meeting.place.name
+    try:
+        async with new_session.begin() as session:
+            _data = {}
+            if meeting.place:
+                _data["location_lon"] = meeting.place.longitude
+                _data["location_lat"] = meeting.place.latitude
+                _data["location_name"] = meeting.place.name
 
-        meeting_data = meeting.model_dump()
-        if meeting.participants:
-            _data["participants"] = meeting_data["participants"]
-        if meeting.date:
-            _data["date"] = meeting_data["date"]
-        stmt = (
-            update(Meeting).
-            where(Meeting.user_id == user_id).
-            where(Meeting.id == meeting_id).
-            values(**_data).
-            returning(Meeting)
-        )
+            meeting_data = meeting.model_dump()
+            if meeting.participants:
+                _data["participants"] = meeting_data["participants"]
+            if meeting.date:
+                _data["date"] = meeting_data["date"]
+            stmt = (
+                update(Meeting).
+                where(Meeting.user_id == user_id).
+                where(Meeting.id == meeting_id).
+                values(**_data).
+                returning(Meeting)
+            )
 
-        meeting = (await session.execute(stmt)).one()[0].to_read_model()
-        await session.commit()
-        return meeting
+            meeting = (await session.execute(stmt)).one()[0].to_read_model()
+            await session.commit()
+            return meeting
+    except (IntegrityError, InvalidRequestError):
+        raise BaseDBException
 
 
 async def cancel_meeting(meeting_id: int,
                          user_id: int) -> None:
-    async with new_session.begin() as session:
-        stmt = (
-            update(Meeting).
-            where(Meeting.id == meeting_id).
-            where(Meeting.user_id == user_id).
-            values(is_canceled=True)
-        )
-        await session.execute(stmt)
-        await session.commit()
+    try:
+        async with new_session.begin() as session:
+            stmt = (
+                update(Meeting).
+                where(Meeting.id == meeting_id).
+                where(Meeting.user_id == user_id).
+                values(is_canceled=True)
+            )
+            await session.execute(stmt)
+            await session.commit()
+    except IntegrityError:
+        raise BaseDBException
 
 
 async def fill_defaults() -> None:
