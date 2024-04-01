@@ -40,3 +40,8 @@ async def cancel_meeting_handler(meeting_id: int,
                                  user_id: JWTAuth):
     await cancel_meeting(meeting_id, user_id)
     return {"status": "deleted"}
+
+
+@router.patch("/{meeting_id}")
+async def update_meeting_handler():
+    pass
