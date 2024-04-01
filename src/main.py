@@ -30,10 +30,12 @@ app.include_router(agent_router)
 #     response = await call_next(request)
 #
 #     return response
-#
+
 @app.middleware("http")
 async def some_middleware(request: Request, call_next):
+    print(await request.body())
     response = await call_next(request)
+    print(request.headers)
     response_body = b""
     async for chunk in response.body_iterator:
         response_body += chunk
