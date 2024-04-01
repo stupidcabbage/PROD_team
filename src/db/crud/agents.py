@@ -27,23 +27,22 @@ async def get_best_agent() -> AgentSchema | None:
 
 async def fill_defaults() -> None:
     agents = [
-        Agent(name="Дмитрий Евгеньевич", description="Пунктуальный",
-              phone_number="+79250000000", photo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-bVGuJki3XUfvsL7dlKbuI18B7Wk6QdFbteXjf3W8vA&s"),
-        Agent(name="Иван Петрович", description="Добрый мужчина в расвете сил",
-              phone_number="+79851187385", photo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfKeo1e6nU1DKJLPazvI_Ktezx16osGylBJ79O5UC-Aw&s"),
-        Agent(name="Виолетта Андреевна", description="Добрая леди",
-              phone_number="+79800553535", photo="https://st3.depositphotos.com/3811801/18613/i/450/depositphotos_186133820-stock-photo-bearded-man-on-a-gray.jpg"),
-        Agent(name="Петр Александрович", description="Статусный мужчина",
-              phone_number="+79800503535", photo="https://st3.depositphotos.com/3811801/18613/i/450/depositphotos_186133820-stock-photo-bearded-man-on-a-gray.jpg"),
-        Agent(name="Александр Анатольевич", description="Строгий человек",
-              phone_number="+79250001800", photo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-bVGuJki3XUfvsL7dlKbuI18B7Wk6QdFbteXjf3W8vA&s"),
-        Agent(name="Василиса Александровна", description="Никогда не опаздывает",
-              phone_number="+79752187185", photo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfKeo1e6nU1DKJLPazvI_Ktezx16osGylBJ79O5UC-Aw&s"),
-        Agent(name="София Андреевна", description="Всего вовремя!",
-              phone_number="+79890573535", photo="https://st3.depositphotos.com/3811801/18613/i/450/depositphotos_186133820-stock-photo-bearded-man-on-a-gray.jpg"),
-        Agent(name="Дмитрий Витальевич", description="Крайне пунктуален",
-              phone_number="+79899503535", photo="https://st3.depositphotos.com/3811801/18613/i/450/depositphotos_186133820-stock-photo-bearded-man-on-a-gray.jpg"),
-
+        Agent(name="Мустафин Карим Фаридович", description="Мобильный",
+              phone_number="+79250000000", photo="https://i.imgur.com/SnwWK4H.jpeg"),
+        Agent(name="Суханов Данил Валерьевич", description="Ненавижу слеши.",
+              phone_number="+79851187385", photo="https://i.imgur.com/Q9ZidbP.jpeg"),
+        Agent(name="Шамаев Александр Петрович", description="Специалист по возврату просроченных задолжностей.",
+              phone_number="+79800553535", photo="https://i.imgur.com/7I88bCD.jpeg"),
+        Agent(name="Гутче Иван Дмитриевич", description="Статусный мужчина",
+              phone_number="+79800503535", photo="https://i.imgur.com/rAHxpuP.jpeg"),
+        Agent(name="Мустафин Карим Фаридович", description="Мобильный",
+              phone_number="+79250000000", photo="https://i.imgur.com/SnwWK4H.jpeg"),
+        Agent(name="Суханов Данил Валерьевич", description="Ненавижу слеши.",
+              phone_number="+79851187385", photo="https://i.imgur.com/Q9ZidbP.jpeg"),
+        Agent(name="Шамаев Александр Петрович", description="Специалист по возврату просроченных задолжностей.",
+              phone_number="+79800553535", photo="https://i.imgur.com/7I88bCD.jpeg"),
+        Agent(name="Гутче Иван Дмитриевич", description="Статусный мужчина",
+              phone_number="+79800503535", photo="https://i.imgur.com/rAHxpuP.jpeg"),
     ]
     async with new_session.begin() as session:
         existing_rows_count = await session.scalar(select(Agent).limit(1))

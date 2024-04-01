@@ -45,7 +45,7 @@ async def add_meeting(user_id: int,
         _data["location_name"] = meeting.place.name
         _data["user_id"] = user_id
 
-        client = get_client()
+        client = get_client(user_id)
         _data["type"] = client["type"]
         agent = await get_best_agent()
         _data["agent_id"] = randint(2, 5)
@@ -85,6 +85,7 @@ async def update_meeting(user_id: int,
         )
 
         meeting = (await session.execute(stmt)).one()[0].to_read_model()
+        await session.commit()
         return meeting
 
 
@@ -98,13 +99,14 @@ async def cancel_meeting(meeting_id: int,
             values(is_canceled=True)
         )
         await session.execute(stmt)
+        await session.commit()
 
 
 async def fill_defaults() -> None:
     meetings = [
         Meeting(
             user_id=1,
-            agent_id=2,
+            agent_id=1,
             date=datetime(
                 year=2024, month=4, day=1, hour=12, minute=10),
             type='ООО',
