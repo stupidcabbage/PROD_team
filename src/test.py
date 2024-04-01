@@ -1,25 +1,30 @@
 import asyncio
+from datetime import datetime
 
-from schemas.meetings import MeetingAddSchema, ParticipantSchema
-from db.crud.meetings import add_meeting, get_all_meetings
+from schemas.meetings import LocationSchema
+from routing.routing import find_closest_agents
+from schemas.routes import PointSchema, RouteSchema
 
 
 async def test():
-    meeting_data = {
-        'date': '2024-03-31T12:00:00',
-        'place': {'longitude': 0.0, 'latitude': 0.0, 'name': 'Test Location'},
-        'participants': [{"name": "Ваня крутой", "position": "Ген дир", "phone_number": "89123123"},
-                         {"name": "Ваня не крутой", "position": "бейджик", "phone_number": "89123123"},
-                         {"name": "Не ну круто!", "position": "квадрат", "phone_number": "89123123"}]
-    }
-    meeting_data["participants"] = [ParticipantSchema(name=i["name"], position=i["position"], phone_number=i["phone_number"]) for i in meeting_data["participants"]]
-    print(meeting_data)
-    print(type(meeting_data))
-    meeting = MeetingAddSchema(**meeting_data)
-    
-    print(meeting)
-    meeting = await add_meeting(0, meeting)
-    print(meeting)
+    routes = [
+        RouteSchema(agent_id=2, route=[
+            PointSchema(
+                longitude=37.6208, latitude=55.7539, date_time=datetime(
+                    year=2024, month=4, day=1, hour=12, minute=10), meeting_id=1),
+            PointSchema(
+                longitude=37.6183, latitude=55.7517, date_time=datetime(
+                    year=2024, month=4, day=1, hour=16, minute=30), meeting_id=2)
+        ]),
+        RouteSchema(agent_id=3, route=[
+            PointSchema(
+                longitude=37.6155, latitude=55.7558, date_time=datetime(
+                    year=2024, month=4, day=1, hour=13, minute=45), meeting_id=3),
+        ]),
+    ]
 
+    await find_closest_agents(routes, LocationSchema(
+        name='Test', longitude=36.9163, latitude=56.0060), target_time=datetime(
+        year=2024, month=4, day=1, hour=13, minute=45))
 
 asyncio.run(test())
