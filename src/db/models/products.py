@@ -22,4 +22,5 @@ class Product(Model):
     def to_read_model(self) -> ProductSchema:
         return ProductSchema(id=self.id,
                              name=self.name,
-                             description=self.description)
+                             description=self.description,
+                             url=self.url)
