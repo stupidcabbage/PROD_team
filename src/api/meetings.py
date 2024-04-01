@@ -5,8 +5,8 @@ from fastapi import APIRouter, Body, status
 from api.dependencies import JWTAuth
 from db.crud.documents import get_documents
 from db.crud.meetings import (add_meeting, cancel_meeting, get_all_meetings,
-                              get_meeting_by_id, update_meeting)
-from schemas.meetings import MeetingAddSchema, MeetingSchema, MeetingUpdateSchema
+                              get_meeting_by_id)
+from schemas.meetings import MeetingAddSchema, MeetingSchema
 
 router = APIRouter(prefix='/meetings', tags=["meetings"])
 
@@ -43,8 +43,5 @@ async def cancel_meeting_handler(meeting_id: int,
 
 
 @router.patch("/{meeting_id}")
-async def update_meeting_handler(meeting: MeetingUpdateSchema,
-                                 meeting_id: int,
-                                 user_id: JWTAuth):
-    meeting = await update_meeting(user_id, meeting_id, meeting)
-    return meeting
+async def update_meeting_handler():
+    pass
