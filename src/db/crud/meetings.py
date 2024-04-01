@@ -28,7 +28,7 @@ async def get_all_meetings(user_id: int) -> list[MeetingSchema] | None:
         )
         result = await session.scalars(stmt)
         if result:
-            result = [row.to_read_model() for row in result].reverse()
+            result = [row.to_read_model() for row in result]
         return result
 
 
