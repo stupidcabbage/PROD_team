@@ -66,6 +66,8 @@ async def find_closest_agents(routes: list[RouteSchema], point: PointSchema) -> 
 
             time_delta = timedelta(milliseconds=route_time, minutes=30)
 
+            print(
+                "PUPU", route.locations[-1].date_time, time_delta, target_time)
             if route.locations[-1].date_time + time_delta < target_time:
                 agents.append((route.agent_id, route_time))
 
