@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from schemas.meetings import AgentSchema
 from db.crud.agents import get_best_agent
+from schemas.meetings import AgentSchema
 
 router = APIRouter(prefix='/agents', tags=["agents"])
 
