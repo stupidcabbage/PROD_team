@@ -131,6 +131,19 @@ async def fill_defaults() -> None:
             location_lat=46.3,
             location_name='Московская область, Нахабино, Красноармейская 5к1',
             is_canceled=False,
+        ),
+        Meeting(
+            user_id=1,
+            agent_id=1,
+            date=datetime(
+                year=2024, month=4, day=1, hour=12, minute=10),
+            type='ИП',
+            participants=[
+                {'name': 'Иванов Иван', 'position': 'Бухгалтер', 'phone_number': '+79851187385'}],
+            location_lon=55.3,
+            location_lat=46.3,
+            location_name='Московская область, Нахабино, Красноармейская 5к1',
+            is_canceled=False,
         )
     ]
     async with new_session.begin() as session:

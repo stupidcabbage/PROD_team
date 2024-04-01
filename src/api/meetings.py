@@ -45,7 +45,7 @@ async def add_meeting_handler(meeting: Annotated[MeetingAddSchema, Body()],
 
 @router.get('/')
 async def get_meetings_handler(user_id: JWTAuth) -> list[MeetingSchema]:
-    meetings = await get_all_meetings(user_id=user_id)
+    meetings = await get_all_meetings(user_id=user_id)  # TODO
     return meetings
 
 
