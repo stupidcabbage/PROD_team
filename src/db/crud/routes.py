@@ -32,7 +32,6 @@ async def add_route(route: RouteSchema) -> RouteSchema | None:
         for i in _data['locations']:
             i['date_time'] = i['date_time'].isoformat()
         _data['date'] = datetime(year=2024, month=4, day=1)
-        print(_data)
         stmt = insert(Route).values(**_data).returning(Route)
         meeting = (await session.execute(stmt)).one()[0].to_read_model()
 
