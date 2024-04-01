@@ -42,6 +42,6 @@ async def test():
     locs = route.locations
     locs.append(PointSchema(
         longitude=39.6208, latitude=56.7539, date_time=datetime(
-            year=2024, month=4, day=2, hour=12, minute=10), meeting_id=1))
+            year=2024, month=4, day=2, hour=12, minute=10)))
     await update_route_points(7, locs)
     print(await get_route(7))

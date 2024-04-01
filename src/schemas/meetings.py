@@ -1,7 +1,7 @@
 from datetime import datetime
 from enum import Enum
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class LocationSchema(BaseModel):
@@ -31,6 +31,7 @@ class AgentSchema(BaseModel):
 
 class MeetingAddSchema(BaseModel):
     date: datetime  # DATEFORMAT: DD.MM.YYYY HH:MM:SS
+    agent_id: int | None = None
     place: LocationSchema
     participants: list[ParticipantSchema]
 
@@ -48,6 +49,7 @@ class DocumentsSchema(BaseModel):
 
 class MeetingSchema(MeetingAddSchema):
     id: int
+    agent_id: int | None = Field(exclude=True, default=None)
     documents: DocumentsSchema | None = None
     agent: AgentSchema | None = None
     is_canceled: bool = False

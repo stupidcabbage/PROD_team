@@ -1,4 +1,3 @@
-import json
 from datetime import datetime
 
 from sqlalchemy import BIGINT, FLOAT, JSON, ForeignKey
