@@ -41,9 +41,9 @@ async def add_route(route: RouteSchema) -> RouteSchema | None:
             stmt = insert(Route).values(**_data).returning(Route)
             meeting = (await session.execute(stmt)).one()[0].to_read_model()
 
-                await session.commit()
-                await session.flush()
-                return meeting
+            await session.commit()
+            await session.flush()
+            return meeting
     except:
         raise BaseDBException
 
@@ -70,7 +70,7 @@ async def get_route_by_agent_and_date(agent_id: int, date: datetime) -> RouteSch
     try:
         async with new_session.begin() as session:
             stmt = select(Route).where(Route.agent_id ==
-                                    agent_id).where(Route.date == date)
+                                       agent_id).where(Route.date == date)
             result = await session.scalar(stmt)
             if result:
                 result = result.to_read_model()
