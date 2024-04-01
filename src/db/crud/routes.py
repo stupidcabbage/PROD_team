@@ -62,8 +62,9 @@ async def update_route_points(route_id: int,
             returning(Route)
         )
 
-        meeting = (await session.execute(stmt)).one()[0].to_read_model()
-        return meeting
+        route = (await session.execute(stmt)).one()[0].to_read_model()
+        print(route)
+        return route
 
 
 async def get_route_by_agent_and_date(agent_id: int, date: datetime) -> RouteSchema | None:

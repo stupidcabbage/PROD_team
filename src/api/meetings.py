@@ -17,7 +17,7 @@ router = APIRouter(prefix='/meetings', tags=["meetings"])
 @router.post('/', response_model_exclude_none=True)
 async def add_meeting_handler(meeting: Annotated[MeetingAddSchema, Body()],
                               user_id: JWTAuth) -> MeetingSchema | None:
-    meeting = await add_meeting(user_id, meeting)
+    meeting_ret = await add_meeting(user_id, meeting)
 
     agent_id = meeting.agent_id
     lat = meeting.place.latitude
@@ -39,7 +39,8 @@ async def add_meeting_handler(meeting: Annotated[MeetingAddSchema, Body()],
                       latitude=lat, longitude=lon))
 
     await update_route_points(route_data.id, _locations)
-    return meeting
+    print(meeting_ret)
+    return meeting_ret
 
 
 @router.get('/')

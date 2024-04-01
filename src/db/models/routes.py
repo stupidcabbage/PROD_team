@@ -18,5 +18,5 @@ class Route(Model):
     locations: Mapped[JSON] = mapped_column(JSON)
 
     def to_read_model(self) -> RouteSchema:
-        return RouteSchema(id=self.id, agent_id=self.agent_id,
+        return RouteSchema(id=self.id, agent_id=self.agent_id, date=self.date,
                            locations=[PointSchema(**location) for location in self.locations])

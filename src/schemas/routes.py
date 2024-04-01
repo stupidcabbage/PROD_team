@@ -19,4 +19,5 @@ class PointSchema(BaseModel):
 class RouteSchema(BaseModel):
     id: int
     agent_id: int
+    date: datetime
     locations: list[PointSchema]

@@ -56,7 +56,6 @@ async def add_meeting(user_id: int,
 
             client = get_client(user_id)
             _data["type"] = client["type"]
-            _data["agent_id"] = randint(2, 5)
             _data['is_canceled'] = False
 
             stmt = insert(Meeting).values(_data).returning(Meeting)
