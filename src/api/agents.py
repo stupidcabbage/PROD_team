@@ -15,7 +15,7 @@ router = APIRouter(prefix='/agents', tags=["agents"])
 
 
 @router.get('/')
-async def get_agents_handler(point: Annotated[PointSchema, Depends()],
+async def get_agents_handler(point: PointSchema,
                              user_id: JWTAuth) -> list[AgentSchema | None]:
     resp = []
     routes = await get_all_routes()

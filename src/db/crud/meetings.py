@@ -56,7 +56,6 @@ async def add_meeting(user_id: int,
 
             client = get_client(user_id)
             _data["type"] = client["type"]
-            agent = await get_best_agent()
             _data["agent_id"] = randint(2, 5)
             _data['is_canceled'] = False
 
@@ -96,9 +95,9 @@ async def update_meeting(user_id: int,
                 returning(Meeting)
             )
 
-            meeting = (await session.execute(stmt)).one()[0].to_read_model()
+            meeting_updated = (await session.execute(stmt)).one()[0].to_read_model()
             await session.commit()
-            return meeting
+            return meeting_updated
     except:
         raise BaseDBException
 
