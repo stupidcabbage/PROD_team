@@ -26,7 +26,7 @@ async def get_agents_handler(point: PointSchema,
     if not agents:
         return resp
 
-    for agent_id, _ in agents:
+    for agent_id, _ in set(agents):
         agent = await get_agent_by_id(agent_id)
         resp.append(agent)
 
