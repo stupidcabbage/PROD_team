@@ -23,7 +23,7 @@ async def get_all_meetings(user_id: int) -> list[MeetingSchema] | None:
         stmt = select(Meeting).where(Meeting.user_id == user_id)
         result = await session.scalars(stmt)
         if result:
-            result = [row.to_read_model() for row in result]
+            result = [row.to_read_model() for row in result].reverse()
         return result
 
 

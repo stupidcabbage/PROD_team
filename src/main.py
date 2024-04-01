@@ -31,12 +31,12 @@ app.include_router(agent_router)
 #
 #     return response
 #
-# @app.middleware("http")
-# async def some_middleware(request: Request, call_next):
-#     response = await call_next(request)
-#     response_body = b""
-#     async for chunk in response.body_iterator:
-#         response_body += chunk
-#     print(f"response_body={response_body.decode()}")
-#     return Response(content=response_body, status_code=response.status_code,
-#                     headers=dict(response.headers), media_type=response.media_type)
+@app.middleware("http")
+async def some_middleware(request: Request, call_next):
+    response = await call_next(request)
+    response_body = b""
+    async for chunk in response.body_iterator:
+        response_body += chunk
+    print(f"response_body={response_body.decode()}")
+    return Response(content=response_body, status_code=response.status_code,
+                    headers=dict(response.headers), media_type=response.media_type)
