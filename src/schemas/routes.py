@@ -1,5 +1,4 @@
 from datetime import datetime
-from enum import Enum
 
 from pydantic import BaseModel
 
@@ -13,4 +12,4 @@ class PointSchema(BaseModel):
 
 class RouteSchema(BaseModel):
     agent_id: int
-    route: list[PointSchema]
+    locations: list[PointSchema]

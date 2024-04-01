@@ -22,4 +22,4 @@ class Route(Model):
 
     def to_read_model(self) -> RouteSchema:
         return RouteSchema(agent_id=self.agent_id,
-                           route=[PointSchema(location) for location in self.locations])
+                           locations=[PointSchema(**location) for location in self.locations])

@@ -3,6 +3,7 @@ import json
 from sqlalchemy import insert, select, update
 
 from db.db import new_session
+from datetime import datetime
 from db.models.routes import Route
 from schemas.routes import (RouteSchema, PointSchema)
 
@@ -25,10 +26,14 @@ async def get_all_routes() -> list[RouteSchema] | None:
         return result
 
 
-async def add_route(route: RouteSchema,) -> RouteSchema | None:
+async def add_route(route: RouteSchema) -> RouteSchema | None:
     async with new_session.begin() as session:
         _data = route.model_dump()
-        stmt = insert(Route).values(_data).returning(Route)
+        for i in _data['locations']:
+            i['date_time'] = i['date_time'].isoformat()
+        _data['date'] = datetime(year=2024, month=4, day=1)
+        print(_data)
+        stmt = insert(Route).values(**_data).returning(Route)
         meeting = (await session.execute(stmt)).one()[0].to_read_model()
 
         await session.commit()
