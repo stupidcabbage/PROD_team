@@ -82,7 +82,7 @@ async def get_route_by_agent_and_date(agent_id: int, date: datetime) -> RouteSch
 async def fill_defaults() -> None:
     routes = []
     for day in range(1, 20):
-        routes.append([
+        routes_list = [
             Route(date=datetime(year=2024, month=4, day=day), agent_id=1, locations=[
                 PointSchema(
                     longitude=37.6208, latitude=55.7539, date_time=datetime(
@@ -100,12 +100,16 @@ async def fill_defaults() -> None:
                     longitude=37.6208, latitude=55.7539, date_time=datetime(
                         year=2024, month=4, day=1, hour=8, minute=0)).to_dict()
             ]),
-            Route(date=datetime(year=2024, month=4, day=day), agent_id=4, locations=[
+            Route(date=datetime(year=2024, month=4, day=1), agent_id=4, locations=[
                 PointSchema(
                     longitude=37.6155, latitude=55.7558, date_time=datetime(
                         year=2024, month=4, day=1, hour=8, minute=0)).to_dict()
             ]),
-        ])
+        ]
+
+        for route in routes_list:
+            routes.append(route)
+
     async with new_session.begin() as session:
         existing_rows_count = await session.scalar(select(Route).limit(1))
 
