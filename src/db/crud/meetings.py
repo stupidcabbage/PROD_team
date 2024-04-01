@@ -11,7 +11,7 @@ from schemas.meetings import (MeetingAddSchema, MeetingSchema,
                               MeetingUpdateSchema)
 from schemas.exceptions import BaseDBException
 from utils import get_client
-from sqlalchemy.exc import IntegrityError, InvalidRequestError
+from sqlalchemy.exc import IntegrityError
 
 
 async def get_meeting_by_id(id: int) -> MeetingSchema | None:

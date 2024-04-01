@@ -2,7 +2,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 
 from schemas.meetings import AgentSchema
-from schemas.meetings import AgentSchema, LocationSchema, MeetingAddSchema, MeetingSchema
+from schemas.meetings import AgentSchema
 from schemas.routes import PointSchema
 from db.crud.agents import get_agent_by_id
 from api.dependencies import JWTAuth
