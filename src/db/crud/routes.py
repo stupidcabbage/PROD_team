@@ -44,8 +44,10 @@ async def add_route(route: RouteSchema) -> RouteSchema | None:
 async def update_route_points(route_id: int,
                               points: list[PointSchema]) -> PointSchema:
     async with new_session.begin() as session:
-        _data = {'locations': json.dumps(
-            [point.model_dump() for point in points])}
+        _points = [point.model_dump() for point in points]
+        for loc in _points:
+            loc['date_time'] = loc['date_time'].isoformat()
+        _data = {'locations': _points}
         stmt = (
             update(Route).
             where(Route.id == route_id).
