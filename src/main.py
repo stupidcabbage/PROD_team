@@ -7,6 +7,7 @@ from api.products import router as products_router
 from db.crud.agents import fill_defaults as fill_agents
 from db.crud.meetings import fill_defaults as fill_meetings
 from db.crud.agents import fill_defaults as fill_agents
+from db.crud.routes import fill_defaults as fill_routes
 from db.crud.products import fill_defaults as fill_products
 from api.exceptions import db_exception_handler
 from schemas.exceptions import BaseDBException
@@ -16,7 +17,8 @@ from schemas.exceptions import BaseDBException
 async def lifespan(app: FastAPI):
     await fill_agents()
     await fill_meetings()
-    await fill_products()
+    # await fill_products()
+    await fill_routes()
     yield
 
 app = FastAPI(lifespan=lifespan)
