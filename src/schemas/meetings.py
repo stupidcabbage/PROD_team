@@ -35,6 +35,12 @@ class MeetingAddSchema(BaseModel):
     participants: list[ParticipantSchema]
 
 
+class MeetingUpdateSchema(BaseModel):
+    place: LocationSchema | None = None
+    participants: list[ParticipantSchema] | None = None
+    date: datetime | None = None
+
+
 class DocumentsSchema(BaseModel):
     id: int
     documents: list[str]

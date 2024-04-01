@@ -1,7 +1,7 @@
 from datetime import datetime
 from random import randint
-from schemas.meetings import MeetingAddSchema, MeetingSchema
-from sqlalchemy import insert, select
+from schemas.meetings import MeetingAddSchema, MeetingSchema, MeetingUpdateSchema
+from sqlalchemy import insert, select, update
 from db.db import new_session
 from db.models.meetings import Meeting
 from db.crud.agents import get_best_agent
@@ -20,7 +20,12 @@ async def get_meeting_by_id(id: int) -> MeetingSchema | None:
 
 async def get_all_meetings(user_id: int) -> list[MeetingSchema] | None:
     async with new_session.begin() as session:
-        stmt = select(Meeting).where(Meeting.user_id == user_id)
+        stmt = (
+            select(Meeting).
+            where(Meeting.user_id == user_id).
+            where(Meeting.is_canceled == False).
+            order_by(Meeting.date)
+        )
         result = await session.scalars(stmt)
         if result:
             result = [row.to_read_model() for row in result]
@@ -42,7 +47,6 @@ async def add_meeting(user_id: int,
         agent = await get_best_agent()
         _data["agent_id"] = randint(2, 5)
         _data['is_canceled'] = False
-        _data["date"] = meeting.date.now(tz=None)
 
         stmt = insert(Meeting).values(_data).returning(Meeting)
         meeting = (await session.execute(stmt)).one()[0].to_read_model()
@@ -52,6 +56,35 @@ async def add_meeting(user_id: int,
         await session.commit()
         await session.flush()
         return meeting
+
+
+async def update_meeting(user_id: int,
+                         meeting: MeetingUpdateSchema) -> MeetingSchema:
+    async with new_session.begin() as session:
+        _data = {}
+        if meeting.place:
+            _data["location_lon"] = meeting.place.longitude
+            _data["location_lat"] = meeting.place.latitude
+            _data["location_name"] = meeting.place.name
+
+        meeting_data = meeting.model_dump()
+        if meeting.participants:
+            _data["participants"] = meeting_data["participants"]
+        if meeting.date:
+            _data["date"] = meeting_data["date"]
+        pass
+
+
+async def cancel_meeting(meeting_id: int,
+                         user_id: int) -> None:
+    async with new_session.begin() as session:
+        stmt = (
+            update(Meeting).
+            where(Meeting.id == meeting_id).
+            where(Meeting.user_id == user_id).
+            values(is_canceled=True)
+        )
+        await session.execute(stmt)
 
 
 async def fill_defaults() -> None:
