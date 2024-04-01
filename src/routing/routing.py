@@ -29,7 +29,7 @@ async def get_route_time(point_a: Tuple[float, float], point_b: Tuple[float, flo
         time = route_data['paths'][0]['time']
     else:
         raise RuntimeError('ROUTING ERROR')
-    return time
+    return int(time)
 
 
 async def find_closest_agents(routes: list[RouteSchema], point: PointSchema) -> list[Tuple[int, int]]:
@@ -39,9 +39,12 @@ async def find_closest_agents(routes: list[RouteSchema], point: PointSchema) -> 
     agents = []
 
     for route in routes:
-        print(route.locations[0].date_time.date(), target_time.date())
         if route.locations[0].date_time.date() != target_time.date():
             continue
+        print(route)
+        print(len(route.locations))
+
+        route.locations.sort(key=lambda x: x.date_time)
         if len(route.locations) == 1:
             print(str(route.locations[0].date_time), str(target_time.date))
             left_point_time = route.locations[0].date_time
@@ -53,11 +56,24 @@ async def find_closest_agents(routes: list[RouteSchema], point: PointSchema) -> 
             time_delta = timedelta(minutes=(int(route_time) + 30))
             agents.append((route.agent_id, route_time))
 
+        elif route.locations[-1].date_time < target_time:
+            print(route.agent_id)
+            route_time = await get_route_time(
+                (route.locations[-1].longitude,
+                 route.locations[-1].latitude),
+                (target_lon, target_lat),
+                (target_lon, target_lat))
+
+            time_delta = timedelta(milliseconds=route_time, minutes=30)
+
+            if route.locations[-1].date_time + time_delta < target_time:
+                agents.append((route.agent_id, route_time))
+
         else:
-            route.locations.sort(key=lambda x: x.date_time)
             for i in range(1, len(route.locations)):
                 right_point_time = route.locations[i].date_time
                 left_point_time = route.locations[i - 1].date_time
+                print("TIMES", right_point_time, left_point_time, target_time)
                 if right_point_time > target_time and left_point_time < target_time:
                     route_time = await get_route_time(
                         (route.locations[i - 1].longitude,
@@ -65,10 +81,12 @@ async def find_closest_agents(routes: list[RouteSchema], point: PointSchema) -> 
                         (target_lon, target_lat),
                         (route.locations[i].longitude,
                          route.locations[i].latitude))
-                    time_delta = timedelta(minutes=(int(route_time) + 30))
+                    print(route_time)
+                    time_delta = timedelta(milliseconds=route_time, minutes=30)
 
                     if left_point_time + time_delta < right_point_time:
                         agents.append((route.agent_id, route_time))
-
+                        break
+    print(agents)
     agents = sorted(agents, key=lambda x: x[1])
     return agents[:10]
