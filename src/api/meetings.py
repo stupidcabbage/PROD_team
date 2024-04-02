@@ -36,7 +36,7 @@ async def add_meeting_handler(meeting: Annotated[MeetingAddSchema, Body()],
 
     _locations = route_data.locations
     _locations.append(PointSchema(date_time=date_time,
-                      latitude=lon, longitude=lat))
+                      latitude=lat, longitude=lon))
 
     await update_route_points(route_data.id, _locations)
     print(meeting_ret)
