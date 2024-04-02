@@ -18,7 +18,7 @@ from schemas.exceptions import BaseDBException
 async def lifespan(app: FastAPI):
     await fill_agents()
     await fill_meetings()
-    # await fill_products()
+    await fill_products()
     await fill_routes()
     yield
 
@@ -26,6 +26,7 @@ app = FastAPI(lifespan=lifespan)
 app.include_router(meetings_router)
 app.include_router(agent_router)
 app.include_router(products_router)
+app.add_exception_handler(BaseDBException, db_exception_handler)
 
 
 @app.middleware("http")
