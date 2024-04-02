@@ -1,3 +1,4 @@
+from datetime import datetime
 import prometheus_client
 
 meetings_count = prometheus_client.Counter(
@@ -19,7 +20,7 @@ product_counter_mapping = {
     9: 'accounting',
 }
 
-counter_definitions = {
+product_counter_definitions = {
     'buisness_card': 'Clicked Buisness Card for organizations',
     'individual_card_count': 'Clicked Buisness Card for organizations',
     'online_bank_small': 'Clicked Online Bank for small business',
@@ -30,5 +31,37 @@ counter_definitions = {
 }
 
 product_counters = {}
-for name, description in counter_definitions.items():
+for name, description in product_counter_definitions.items():
     product_counters[name] = prometheus_client.Counter(name, description)
+
+weekday_counter = prometheus_client.Counter(
+    'week_day', 'Day of week of meeting')
+
+weekday_definitions = {
+    'mon_counter': '',
+    'tue_counter': '',
+    'wed_counter': '',
+    'thu_counter': '',
+    'fri_counter': '',
+    'sat_counter': '',
+    'sun_counter': '',
+}
+
+weekday_mapping = {
+    0: 'mon_counter',
+    1: 'tue_counter',
+    2: 'wed_counter',
+    3: 'thu_counter',
+    4: 'fri_counter',
+    5: 'sat_counter',
+    6: 'sun_counter',
+}
+
+weekday_counters = {}
+for name, description in weekday_definitions.items():
+    weekday_counters[name] = prometheus_client.Counter(name, description)
+
+
+def inc_day_of_week(date: datetime):
+    day = date.weekday()
+    weekday_counters[weekday_mapping[day]].inc(1)
