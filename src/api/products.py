@@ -7,19 +7,19 @@ import prometheus_client
 
 router = APIRouter(prefix='/products', tags=["products"])
 
-
-comapny_card_count = prometheus_client.Counter(
-    'buisness_card', 'Clicked Buisness Card for organizations'
-)
-individual_card_count = prometheus_client.Counter(
-    'individual_card_count', 'Clicked Buisness Card for organizations'
-)
-comapny_card_count = prometheus_client.Counter(
-    'buisness_card', 'Clicked Buisness Card for organizations'
-)
-comapny_card_count = prometheus_client.Counter(
-    'buisness_card', 'Clicked Buisness Card for organizations'
-)
+#
+# comapny_card_count = prometheus_client.Counter(
+#     'buisness_card', 'Clicked Buisness Card for organizations'
+# )
+# individual_card_count = prometheus_client.Counter(
+#     'individual_card_count', 'Clicked Buisness Card for organizations'
+# )
+# comapny_card_count = prometheus_client.Counter(
+#     'buisness_card', 'Clicked Buisness Card for organizations'
+# )
+# comapny_card_count = prometheus_client.Counter(
+#     'online_bank_small', 'Clicked Online Bank '
+# )
 # {"name": "Бизнес карта для компаний", "description": "Обслуживание — 0 ₽. Привязана к расчетному счету. Для бизнес-расходов и личных трат", "is_organisation": True, "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"},
 # {"name": "Бизнес карта для ИП", "description": "Обслуживание — 0 ₽. Привязана к расчетному счету. Для бизнес-расходов и личных трат", "is_organisation": False, "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"},
 # {"name": "Онлайн банк для малого бизнеса", "description": "Без очередей и ожидания на линии. Удобное приложение и личный кабинет. Поддержка 24/7 в чате", "is_organisation": True, "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"},
@@ -40,3 +40,4 @@ async def get_products(user_id: JWTAuth) -> list[ProductSchema]:
 
 @router.post('/{product_id}')
 async def post_products(user_id: JWTAuth):
+    pass
