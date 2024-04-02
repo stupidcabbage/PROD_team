@@ -81,6 +81,7 @@ async def get_route_by_agent_and_date(agent_id: int, date: datetime) -> RouteSch
 
 
 async def fill_defaults() -> None:
+    # заполнение слотов - 'приходит из другого сервиса'(начало рабочего дня в 8 в центре москвы)
     routes = []
     for day in range(1, 20):
         routes_list = [

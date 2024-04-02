@@ -19,6 +19,9 @@ meetings_count = prometheus_client.Counter(
     'meetings_count', 'Number of meetings'
 )
 
+canceled_meetings_count = prometheus_client.Counter(
+    'canceled_meetings_count', 'Number of canceled meetings')
+
 
 @router.post('/', response_model_exclude_none=True)
 async def add_meeting_handler(meeting: Annotated[MeetingAddSchema, Body()],
@@ -72,6 +75,7 @@ async def get_meeting_handler(meeting_id: int,
                status_code=status.HTTP_204_NO_CONTENT)
 async def cancel_meeting_handler(meeting_id: int,
                                  user_id: JWTAuth):
+    canceled_meetings_count.inc(1)
     await cancel_meeting(meeting_id, user_id)
     return {"status": "deleted"}
 

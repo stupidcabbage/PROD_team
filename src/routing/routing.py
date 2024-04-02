@@ -20,6 +20,7 @@ def generate_graphhopper_url(points: list[Tuple[float, float]]) -> str:
 
 async def get_route_time(point_a: Tuple[float, float], point_b: Tuple[float, float],
                          point_c: Tuple[float, float]):
+    # TODO КОСТЫЛЬ: почему-то координаты второй и третей точки меняются местами
     point_b_rev = (point_b[1], point_b[0])
     point_c_rev = (point_c[1], point_c[0])
 
