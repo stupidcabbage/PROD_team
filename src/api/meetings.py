@@ -10,17 +10,9 @@ from db.crud.meetings import (add_meeting, cancel_meeting, get_all_meetings,
 from schemas.meetings import MeetingAddSchema, MeetingSchema, MeetingUpdateSchema
 from db.crud.routes import get_route_by_agent_and_date, update_route_points
 from schemas.routes import PointSchema
-import prometheus_client
+from metrics import meetings_count, canceled_meetings_count
 
 router = APIRouter(prefix='/meetings', tags=["meetings"])
-
-
-meetings_count = prometheus_client.Counter(
-    'meetings_count', 'Number of meetings'
-)
-
-canceled_meetings_count = prometheus_client.Counter(
-    'canceled_meetings_count', 'Number of canceled meetings')
 
 
 @router.post('/', response_model_exclude_none=True)
