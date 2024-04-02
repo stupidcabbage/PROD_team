@@ -94,7 +94,7 @@ def inc_time_of_day(date: datetime):
 agents_mapping = {}
 agents_counter = {}
 
-for agent_id in range(NUMBER_OF_AGENTS):
+for agent_id in range(1, NUMBER_OF_AGENTS + 1):
     name = f'agent_{agent_id}'
     agents_counter[name] = prometheus_client.Counter(name, '')
     agents_mapping[agent_id] = name
