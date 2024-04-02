@@ -11,8 +11,8 @@ graphhopper_url = 'https://graphhopper.com/api/1/'
 
 
 def generate_graphhopper_url(points: list[Tuple[float, float]]) -> str:
-    graph_points = '&point='.join([','.join([str(point[0]), str(point[1])])
-                                   for point in points])
+    graph_points = '&point='.join(
+        [','.join(map(str, point)) for point in points])
     key = '41b99b2f-0843-4ccc-947b-89ef6cefade4'
     print(graph_points)
     return f'{graphhopper_url}route?point={graph_points}&vehicle=car&key={key}'
@@ -20,7 +20,10 @@ def generate_graphhopper_url(points: list[Tuple[float, float]]) -> str:
 
 async def get_route_time(point_a: Tuple[float, float], point_b: Tuple[float, float],
                          point_c: Tuple[float, float]):
-    response = await client.get(generate_graphhopper_url([point_a, point_b, point_c]))
+    point_b_rev = (point_b[1], point_b[0])
+    point_c_rev = (point_c[1], point_c[0])
+
+    response = await client.get(generate_graphhopper_url([point_a, point_b_rev, point_c_rev]))
 
     if response.status_code != 200:
         raise RuntimeError(response.json())
