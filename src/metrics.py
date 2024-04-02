@@ -65,3 +65,25 @@ for name, description in weekday_definitions.items():
 def inc_day_of_week(date: datetime):
     day = date.weekday()
     weekday_counters[weekday_mapping[day]].inc(1)
+
+
+morning_counter = prometheus_client.Counter('morning_couter', '')
+late_morning_counter = prometheus_client.Counter('late_morning_counter', '')
+day_counter = prometheus_client.Counter('day_counter', '')
+late_day_counter = prometheus_client.Counter('late_day_counter', '')
+evening_counter = prometheus_client.Counter('evening_counter', '')
+
+
+def inc_time_of_day(date: datetime):
+    hour = date.hour
+
+    if 8 < hour < 12:
+        morning_counter.inc(1)
+    elif 12 < hour < 14:
+        late_morning_counter.inc(1)
+    elif 14 < hour < 16:
+        day_counter.inc(1)
+    elif 16 < hour < 19:
+        late_day_counter.inc(1)
+    elif 19 < hour < 20:
+        evening_counter.inc(1)
