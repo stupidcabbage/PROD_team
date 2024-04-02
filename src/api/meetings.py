@@ -10,13 +10,14 @@ from db.crud.meetings import (add_meeting, cancel_meeting, get_all_meetings,
 from schemas.meetings import MeetingAddSchema, MeetingSchema, MeetingUpdateSchema
 from db.crud.routes import get_route_by_agent_and_date, update_route_points
 from schemas.routes import PointSchema
-from prometheus_client import Histogram
+import prometheus_client
 
 router = APIRouter(prefix='/meetings', tags=["meetings"])
 
 
-meeting_datetime = Histogram(
-    'meeting_datetime', 'Meeting Date and Time', ['method', 'endpoint'])
+meetings_count = prometheus_client.Counter(
+    'meetings_count', 'Number of meetings'
+)
 
 
 @router.post('/', response_model_exclude_none=True)
@@ -44,9 +45,8 @@ async def add_meeting_handler(meeting: Annotated[MeetingAddSchema, Body()],
                       latitude=lat, longitude=lon))
 
     # Record the date_time of the meeting
-    meeting_datetime.labels(
-        method='POST', endpoint='/').observe(date_time.timestamp())
 
+    meetings_count.inc(1)
     await update_route_points(route_data.id, _locations)
     print(meeting_ret)
     return meeting_ret
