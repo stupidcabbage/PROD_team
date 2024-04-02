@@ -101,4 +101,4 @@ for agent_id in range(1, NUMBER_OF_AGENTS + 1):
 
 
 def inc_agent_id(id: int):
-    agents_counter[agents_counter[id]].inc(1)
+    agents_counter[agents_mapping[id]].inc(1)
