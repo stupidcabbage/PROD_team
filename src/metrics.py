@@ -1,5 +1,7 @@
 from datetime import datetime
+from config import NUMBER_OF_AGENTS
 import prometheus_client
+
 
 meetings_count = prometheus_client.Counter(
     'meetings_count', 'Number of meetings'
@@ -87,3 +89,16 @@ def inc_time_of_day(date: datetime):
         late_day_counter.inc(1)
     elif 19 < hour < 20:
         evening_counter.inc(1)
+
+
+agents_mapping = {}
+agents_counter = {}
+
+for agent_id in range(NUMBER_OF_AGENTS):
+    name = f'agent_{agent_id}'
+    agents_counter[name] = prometheus_client.Counter(name, '')
+    agents_mapping[agent_id] = name
+
+
+def inc_agent_id(id: int):
+    agents_counter[agents_counter[id]].inc(1)

@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Any
 
 BASE_DIR = Path(__file__).resolve().parent
+NUMBER_OF_AGENTS = 4
 
 
 class Env:

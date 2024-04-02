@@ -10,7 +10,7 @@ from db.crud.meetings import (add_meeting, cancel_meeting, get_all_meetings,
 from schemas.meetings import MeetingAddSchema, MeetingSchema, MeetingUpdateSchema
 from db.crud.routes import get_route_by_agent_and_date, update_route_points
 from schemas.routes import PointSchema
-from metrics import inc_day_of_week, inc_time_of_day, meetings_count, canceled_meetings_count
+from metrics import inc_agent_id, inc_day_of_week, inc_time_of_day, meetings_count, canceled_meetings_count
 
 router = APIRouter(prefix='/meetings', tags=["meetings"])
 
@@ -42,6 +42,7 @@ async def add_meeting_handler(meeting: Annotated[MeetingAddSchema, Body()],
     meetings_count.inc(1)
     inc_day_of_week(date_time)
     inc_time_of_day(date_time)
+    inc_agent_id(agent_id)
     await update_route_points(route_data.id, _locations)
     print(meeting_ret)
     return meeting_ret
