@@ -35,4 +35,16 @@ services:
       - DB_PORT=5432
       - SECRET_KEY=dc76ad3137c861a8a4cf15b4284eca902be7485a81af89b84769f93050a8febd
       - GRAPHHOPPER_KEY=41b99b2f-0843-4ccc-947b-89ef6cefade4
+  prometheus:
+    image: prom/prometheus:latest
+    restart: always
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - 9090:9090
+
+
+
 
