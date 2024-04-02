@@ -14,6 +14,7 @@ def generate_graphhopper_url(points: list[Tuple[float, float]]) -> str:
     graph_points = '&point='.join([','.join([str(point[1]), str(point[0])])
                                    for point in points])
     key = '41b99b2f-0843-4ccc-947b-89ef6cefade4'
+    print(graph_points)
     return f'{graphhopper_url}route?point={graph_points}&vehicle=car&key={key}'
 
 
