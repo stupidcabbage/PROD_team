@@ -6,3 +6,4 @@ class ProductSchema(BaseModel):
     name: str
     description: str
     url: str
+    image: str

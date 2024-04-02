@@ -15,6 +15,7 @@ class Product(Model):
     description: Mapped[str] = mapped_column()
     url: Mapped[str] = mapped_column()
     is_organisation: Mapped[bool] = mapped_column()
+    image: Mapped[str] = mapped_column()
 
     def __repr__(self) -> str:
         return f"Product(id: {self.id!r}, name: {self.name!r})"
@@ -23,4 +24,5 @@ class Product(Model):
         return ProductSchema(id=self.id,
                              name=self.name,
                              description=self.description,
-                             url=self.url)
+                             url=self.url,
+                             image=self.image)
