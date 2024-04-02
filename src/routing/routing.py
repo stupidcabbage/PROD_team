@@ -11,7 +11,7 @@ graphhopper_url = 'https://graphhopper.com/api/1/'
 
 
 def generate_graphhopper_url(points: list[Tuple[float, float]]) -> str:
-    graph_points = '&point='.join([','.join([str(point[1]), str(point[0])])
+    graph_points = '&point='.join([','.join([str(point[0]), str(point[1])])
                                    for point in points])
     key = '41b99b2f-0843-4ccc-947b-89ef6cefade4'
     print(graph_points)
@@ -50,21 +50,20 @@ async def find_closest_agents(routes: list[RouteSchema], point: PointSchema) -> 
             print(str(route.locations[0].date_time), str(target_time.date))
             left_point_time = route.locations[0].date_time
             route_time = await get_route_time(
-                (route.locations[0].longitude,
-                 route.locations[0].latitude),
-                (target_lon, target_lat),
-                (target_lon, target_lat))
+                (route.locations[0].latitude,
+                 route.locations[0].longitude),
+                (target_lat, target_lon),
+                (target_lat, target_lon))
             time_delta = timedelta(minutes=(int(route_time) + 30))
             agents.append((route.agent_id, route_time))
 
         elif route.locations[-1].date_time < target_time:
             print(route.agent_id)
             route_time = await get_route_time(
-                (route.locations[-1].longitude,
-                 route.locations[-1].latitude),
-                (target_lon, target_lat),
-                (target_lon, target_lat))
-
+                (route.locations[-1].latitude,
+                 route.locations[-1].longitude),
+                (target_lat, target_lon),
+                (target_lat, target_lon))
             time_delta = timedelta(milliseconds=route_time, minutes=30)
 
             print(
@@ -79,11 +78,11 @@ async def find_closest_agents(routes: list[RouteSchema], point: PointSchema) -> 
                 print("TIMES", right_point_time, left_point_time, target_time)
                 if right_point_time > target_time and left_point_time < target_time:
                     route_time = await get_route_time(
-                        (route.locations[i - 1].longitude,
-                         route.locations[i - 1].latitude),
-                        (target_lon, target_lat),
-                        (route.locations[i].longitude,
-                         route.locations[i].latitude))
+                        (route.locations[i - 1].latitude,
+                         route.locations[i - 1].longitude),
+                        (target_lat, target_lon),
+                        (route.locations[i].latitude,
+                         route.locations[i].longitude))
                     print(route_time)
                     time_delta = timedelta(milliseconds=route_time, minutes=30)
 
